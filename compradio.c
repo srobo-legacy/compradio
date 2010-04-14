@@ -330,20 +330,22 @@ void change_state( state_t n )
 
 		/* Send START signals to everything */
 		for( i=0; i<4; i++ ) {
-			if( cur_match_info.teams[i] != 0 && addr_valid[i] )
-			{
-				/* Generate the START string */
-				char* s = NULL;
+			uint8_t j;
+			for( j=0; j<10; j++ )
+				if( cur_match_info.teams[i] != 0 && addr_valid[i] )
+				{
+					/* Generate the START string */
+					char* s = NULL;
 
-				asprintf( &s,
-					  "colour=%s, game=%s",
-					  COLOURS[i], MATCHES[ cur_match_info.type ] );
-				printf( "Match start message to team %hu: \"%s\"\n", cur_match_info.teams[i], s );
+					asprintf( &s,
+						  "colour=%s, game=%s",
+						  COLOURS[i], MATCHES[ cur_match_info.type ] );
+					printf( "Match start message to team %hu: \"%s\"\n", cur_match_info.teams[i], s );
 
-				comp_xbee_start( &team_addresses[i], s );
-				free(s);
-				s = NULL;
-			}
+					comp_xbee_start( &team_addresses[i], s );
+					free(s);
+					s = NULL;
+				}
 		}
 
 		gtk_widget_set_sensitive( b_start, FALSE );
